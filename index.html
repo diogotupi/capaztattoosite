@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Capaz Tattoo — Arte para convívio diário. Tatuagens únicas por Camila Paz.">
+  <title>Capaz Tattoo</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
+  <link rel="shortcut icon" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header" id="header">
+    <a href="#home" class="logo" aria-label="Capaz Tattoo — início">
+      <span class="logo-text">CAPAZ</span>
+    </a>
+    <nav class="nav" aria-label="Navegação principal">
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" data-i18n="nav.home">Início</a></li>
+        <li><a href="#sobre" data-i18n="nav.about">Sobre mim</a></li>
+        <li><a href="#portfolio" data-i18n="nav.portfolio">Portfólio</a></li>
+        <li><a href="#catalogo" data-i18n="nav.catalog">Catálogo</a></li>
+        <li><a href="#agenda" data-i18n="nav.agenda">Agenda</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="header-end">
+      <div class="lang-switcher" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn active" data-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+      </div>
+      <a href="#contact" class="btn btn-outline header-cta" data-i18n="nav.book">Agendar agora</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-video">
+        <!-- Substitua pelo seu vídeo: <video class="hero-video-media" autoplay muted loop playsinline poster="assets/hero-poster.jpg"><source src="assets/hero.mp4" type="video/mp4"></video> -->
+        <div class="hero-video-placeholder" aria-hidden="true"></div>
+        <div class="hero-video-overlay" aria-hidden="true"></div>
+      </div>
+      <h1 class="hero-logo" aria-label="Capaz Tattoo">
+        <span class="hero-logo-text">CAPAZ</span>
+      </h1>
+      <a href="#intro" class="scroll-hint" aria-label="Rolar para baixo">
+        <span data-i18n="hero.scroll">Explorar</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </section>
+
+    <section class="section intro" id="intro">
+      <div class="container intro-inner">
+        <h2 class="section-title intro-title" data-i18n="hero.title">ARTE PARA CONVÍVIO DIÁRIO</h2>
+        <div class="intro-text">
+          <p class="text-prose" data-i18n="hero.p1"></p>
+          <p class="text-prose" data-i18n="hero.p2"></p>
+        </div>
+        <a href="#contact" class="btn btn-primary" data-i18n="hero.cta">Agendar / fazer orçamento</a>
+      </div>
+    </section>
+
+    <section class="section sobre" id="sobre">
+      <div class="container">
+        <div class="sobre-grid">
+        <div class="sobre-image">
+          <div class="image-placeholder" role="img" aria-label="Camila Paz — Capaz">
+            <span>CAPAZ</span>
+          </div>
+        </div>
+        <div class="sobre-content">
+          <h2 class="section-title section-title--single" data-i18n="about.title">Oi! Eu sou a Camila Paz</h2>
+          <p class="sobre-alias" data-i18n="about.alias">Mas pode me chamar de Capaz.</p>
+          <p class="text-prose" data-i18n="about.p1"></p>
+          <div class="social-links">
+            <a href="https://wa.me/" class="social-link" id="whatsappLink" target="_blank" rel="noopener noreferrer" data-i18n="about.whatsapp">WhatsApp</a>
+            <a href="https://instagram.com/" class="social-link" id="instagramLink" target="_blank" rel="noopener noreferrer" data-i18n="about.instagram">Instagram</a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section portfolio" id="portfolio">
+      <div class="container">
+        <h2 class="section-title" data-i18n="portfolio.title">TRABALHOS</h2>
+        <p class="section-lead text-center-line" data-i18n="portfolio.lead"></p>
+      </div>
+      <div class="marquee marquee--portfolio" aria-label="Galeria de trabalhos">
+        <div class="marquee-track" style="--marquee-duration: 100s" data-base-duration="100">
+          <div class="marquee-group" id="portfolioMarqueeGroup">
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316677/EF1F2B7A-8EBD-4D09-B183-F2AEB62F5E0E_oc2eo9.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316677/D1D3C06F-AD3C-418B-9B29-7E59EABA105F_dpqvkq.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316676/2DEC74D8-F259-41CA-922A-0A4B42D8ECCC_uiherx.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316676/BCADA4A5-7CA3-4FB8-82F3-5FF789BD5712_by34xr.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316676/6600CC0D-4EA2-49BD-A5B7-9B4B6D42CB6A_hflzjp.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316676/B87605ED-2145-400C-AB39-9B4F3E3394AE_vfdbn4.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316675/1556162A-D602-430B-9A37-A20DCB76127A_ipae8j.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316676/90788B64-8B48-4877-881B-A7743DEE5A1D_d9kbl5.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316675/A284F799-A104-48FF-9851-12F16D1F16A9_yefr7p.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316675/59F65A0C-ADCC-47D3-8D51-F38B5E9198A7_xgngtm.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316674/DA581A31-1F69-4CC0-9ACC-1C4EC31087B3_lhgyju.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316675/24C8A738-93A2-470F-9C4E-C5EB6F3F4237_dc2isa.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316675/99999F49-64B9-4C4F-A15A-EB4E03689239_g5zcyu.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316674/22D0E648-0A98-4F5D-AA94-3EBB0843EC35_bphgys.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316674/B7AC1258-3BEB-4C00-BDAF-B3D07BB8F4FB_o7jhil.png" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316673/F91D78D7-C6AC-471F-AB35-A042CFA425B4_pyhaj4.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316674/E18D4528-06F3-4513-938D-789E976A710D_yrmkxl.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316673/1746BB3B-7DA5-41DF-A7DF-4162F717E6AA_tobhlk.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316674/87FFDC78-F7C7-46E9-9E32-D53EF119BB48_nh7lf1.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+            <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316673/7968C9E2-B4C5-4D66-BAF5-4E731BF6A966_rhuh4i.jpg" alt="" loading="lazy" width="800" height="800"></div></figure>
+          </div>
+          <div class="marquee-group" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="container">
+        <p class="gallery-note text-center-line" data-i18n="portfolio.note"></p>
+      </div>
+    </section>
+
+    <section class="section catalogo" id="catalogo">
+      <div class="container">
+        <h2 class="section-title" data-i18n="catalog.title">PROJETOS</h2>
+        <p class="section-lead text-center-line" data-i18n="catalog.lead"></p>
+        <p class="catalog-hint text-center-line" data-i18n="catalog.hint"></p>
+        <div class="catalog-grid">
+          <article class="catalog-project">
+            <button type="button" class="catalog-project-trigger" data-src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto/v1779316335/IMG_4236_drqact.jpg" data-title="jarro com lírio" data-min="12 cm" data-price="R$ 550" aria-label="Ver jarro com lírio em tela cheia">
+              <img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316335/IMG_4236_drqact.jpg" alt="jarro com lírio" loading="lazy" width="800" height="1000">
+            </button>
+            <div class="catalog-project-info">
+              <h3 class="catalog-project-title">jarro com lírio</h3>
+              <dl class="catalog-project-meta">
+                <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
+                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 550</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="catalog-project">
+            <button type="button" class="catalog-project-trigger" data-src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto/v1779316335/IMG_4240_pdu1ci.jpg" data-title="buquê de jibóia" data-min="12 cm" data-price="R$ 550" aria-label="Ver buquê de jibóia em tela cheia">
+              <img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316335/IMG_4240_pdu1ci.jpg" alt="buquê de jibóia" loading="lazy" width="800" height="1000">
+            </button>
+            <div class="catalog-project-info">
+              <h3 class="catalog-project-title">buquê de jibóia</h3>
+              <dl class="catalog-project-meta">
+                <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
+                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 550</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="catalog-project">
+            <button type="button" class="catalog-project-trigger" data-src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto/v1779316334/IMG_4231_z3pnxl.jpg" data-title="eu vejo amor em tudo" data-min="12 cm" data-price="R$ 650" aria-label="Ver eu vejo amor em tudo em tela cheia">
+              <img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316334/IMG_4231_z3pnxl.jpg" alt="eu vejo amor em tudo" loading="lazy" width="800" height="1000">
+            </button>
+            <div class="catalog-project-info">
+              <h3 class="catalog-project-title">eu vejo amor em tudo</h3>
+              <dl class="catalog-project-meta">
+                <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
+                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 650</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="catalog-project">
+            <button type="button" class="catalog-project-trigger" data-src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto/v1779316334/IMG_4263_obtu7u.jpg" data-title="projeto floral" data-min="30 cm" data-price="R$ 1.800" aria-label="Ver projeto floral em tela cheia">
+              <img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316334/IMG_4263_obtu7u.jpg" alt="projeto floral" loading="lazy" width="800" height="1000">
+            </button>
+            <div class="catalog-project-info">
+              <h3 class="catalog-project-title">projeto floral</h3>
+              <dl class="catalog-project-meta">
+                <div><dt data-i18n="catalog.min">mínimo</dt><dd>30 cm</dd></div>
+                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 1.800</dd></div>
+              </dl>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="lightbox lightbox--portfolio" id="portfolioLightbox" hidden aria-hidden="true">
+      <div class="lightbox-backdrop" data-portfolio-lightbox-close></div>
+      <div class="lightbox-dialog lightbox-dialog--portfolio" role="dialog" aria-modal="true" aria-label="Galeria de trabalhos">
+        <button type="button" class="lightbox-close" data-portfolio-lightbox-close aria-label="Fechar">×</button>
+        <button type="button" class="lightbox-nav lightbox-nav--prev" data-portfolio-prev aria-label="Trabalho anterior">‹</button>
+        <div class="lightbox-viewport" id="portfolioLightboxViewport">
+          <img class="lightbox-img lightbox-img--portfolio" src="" alt="">
+        </div>
+        <button type="button" class="lightbox-nav lightbox-nav--next" data-portfolio-next aria-label="Próximo trabalho">›</button>
+        <p class="lightbox-counter" id="portfolioLightboxCounter" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="lightbox" id="catalogLightbox" hidden aria-hidden="true">
+      <div class="lightbox-backdrop" data-lightbox-close></div>
+      <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+        <button type="button" class="lightbox-close" data-lightbox-close aria-label="Fechar">×</button>
+        <figure class="lightbox-figure">
+          <img class="lightbox-img" src="" alt="">
+          <figcaption class="lightbox-caption">
+            <h3 class="lightbox-title" id="lightboxTitle"></h3>
+            <p class="lightbox-meta"></p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <section class="section agenda" id="agenda">
+      <div class="container">
+        <h2 class="section-title" data-i18n="agenda.title">AGENDA</h2>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-city" data-i18n="agenda.rio.city">Rio de Janeiro</span>
+            <span class="agenda-detail" data-i18n="agenda.rio.detail">Agenda sempre aberta</span>
+          </li>
+          <li class="agenda-item agenda-item--highlight">
+            <span class="agenda-city" data-i18n="agenda.sp.city">São Paulo</span>
+            <span class="agenda-detail" data-i18n="agenda.sp.detail">22 a 24 de maio · poucas vagas</span>
+          </li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" data-i18n="agenda.cta">Agendar / fazer orçamento</a>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="contact-grid">
+        <div class="contact-left">
+          <h2 class="section-title contact-title" data-i18n="contact.title">CONTATO</h2>
+          <a href="mailto:capaztattoo@gmail.com" class="contact-email">capaztattoo@gmail.com</a>
+          <a href="https://wa.me/" class="btn btn-outline btn-pill" id="whatsappContact" target="_blank" rel="noopener noreferrer" data-i18n="contact.whatsappCta">WHATSAPP</a>
+        </div>
+        <div class="contact-right">
+          <p class="contact-lead" data-i18n="contact.lead"></p>
+          <p class="contact-waiting" data-i18n="contact.waiting"></p>
+        </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-brand">CAPAZ</p>
+    <p class="footer-copy" data-i18n="footer.copy">© Camila Paz · Capaz Tattoo</p>
+    <a href="#home" class="footer-top" data-i18n="footer.top">Voltar ao topo</a>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/portfolio.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
