@@ -11,6 +11,26 @@ function fullSizeSrc(src) {
 
 let marqueeSuppressClick = false;
 
+function waitMarqueeImages(track) {
+  const imgs = track.querySelectorAll("img");
+  return Promise.all(
+    [...imgs].map(
+      (img) =>
+        new Promise((resolve) => {
+          if (img.complete) resolve();
+          else {
+            img.addEventListener("load", resolve, { once: true });
+            img.addEventListener("error", resolve, { once: true });
+          }
+        })
+    )
+  );
+}
+
+function nextFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
 function initPortfolioMarqueeTouch() {
   const marquee = document.querySelector(".marquee--portfolio");
   const track = marquee?.querySelector(".marquee-track");
@@ -18,6 +38,7 @@ function initPortfolioMarqueeTouch() {
 
   const mq = mobileMarqueeMq();
   let active = false;
+  let touchMode = false;
   let offset = 0;
   let velocity = 0;
   let loopLen = 0;
@@ -39,17 +60,21 @@ function initPortfolioMarqueeTouch() {
   };
 
   const applyTransform = () => {
+    if (!touchMode) return;
     track.style.transform = `translate3d(${offset}px, 0, 0)`;
   };
 
   const measure = () => {
-    loopLen = track.scrollWidth / 2;
+    const firstGroup = track.querySelector(".marquee-group:not([aria-hidden])");
+    const w = firstGroup?.getBoundingClientRect().width ?? track.scrollWidth / 2;
+    loopLen = w > 0 ? w : track.scrollWidth / 2;
     if (loopLen > 0) normalizeOffset();
     applyTransform();
+    return loopLen > 0;
   };
 
   const tick = () => {
-    if (!active) return;
+    if (!active || !touchMode) return;
 
     if (!isTouching) {
       if (Math.abs(velocity) > minVelocity) {
@@ -68,21 +93,9 @@ function initPortfolioMarqueeTouch() {
     rafId = requestAnimationFrame(tick);
   };
 
-  const enable = () => {
-    if (active || !mq.matches) return;
-    active = true;
-    offset = 0;
-    velocity = 0;
-    marquee.classList.add("is-touch-drive");
-    track.classList.add("is-touch-scroll");
-    measure();
-    cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(tick);
-  };
-
-  const disable = () => {
-    if (!active) return;
+  const stopTouchDrive = () => {
     active = false;
+    touchMode = false;
     isTouching = false;
     velocity = 0;
     marquee.classList.remove("is-touch-drive");
@@ -92,31 +105,65 @@ function initPortfolioMarqueeTouch() {
     rafId = null;
   };
 
+  const startTouchDrive = async () => {
+    stopTouchDrive();
+    if (!mq.matches) return;
+
+    await waitMarqueeImages(track);
+    await nextFrame();
+    await nextFrame();
+
+    if (!measure()) {
+      marquee.classList.add("is-marquee-css-only");
+      return;
+    }
+
+    marquee.classList.remove("is-marquee-css-only");
+    touchMode = true;
+    active = true;
+    offset = 0;
+    velocity = 0;
+    marquee.classList.add("is-touch-drive");
+    track.classList.add("is-touch-scroll");
+    rafId = requestAnimationFrame(tick);
+  };
+
   const onMqChange = () => {
-    if (mq.matches) enable();
-    else disable();
+    if (mq.matches) startTouchDrive();
+    else {
+      marquee.classList.remove("is-marquee-css-only");
+      stopTouchDrive();
+    }
   };
 
   mq.addEventListener("change", onMqChange);
   window.addEventListener("resize", () => {
-    if (active) measure();
+    if (active && touchMode) measure();
   });
 
-  track.querySelectorAll("img").forEach((img) => {
-    if (!img.complete) img.addEventListener("load", measure, { once: true });
-  });
+  if ("ResizeObserver" in window) {
+    const ro = new ResizeObserver(() => {
+      if (mq.matches && !touchMode) startTouchDrive();
+      else if (touchMode) measure();
+    });
+    ro.observe(track);
+  }
 
   marquee.addEventListener(
     "pointerdown",
     (e) => {
-      if (!active || e.button !== 0) return;
+      if (!touchMode || e.button !== 0) return;
       isTouching = true;
       pointerId = e.pointerId;
       lastX = e.clientX;
       lastTime = performance.now();
       dragTotal = 0;
       velocity = 0;
-      marquee.setPointerCapture(e.pointerId);
+      try {
+        marquee.setPointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
     },
     { passive: true }
   );
@@ -124,7 +171,7 @@ function initPortfolioMarqueeTouch() {
   marquee.addEventListener(
     "pointermove",
     (e) => {
-      if (!active || !isTouching || e.pointerId !== pointerId) return;
+      if (!touchMode || !isTouching || e.pointerId !== pointerId) return;
       const now = performance.now();
       const dx = e.clientX - lastX;
       const dt = Math.max(now - lastTime, 1);
@@ -157,10 +204,8 @@ function initPortfolioMarqueeTouch() {
   marquee.addEventListener("pointerup", endPointer);
   marquee.addEventListener("pointercancel", endPointer);
 
-  requestAnimationFrame(() => {
-    onMqChange();
-    if (active) measure();
-  });
+  window.addEventListener("load", () => startTouchDrive());
+  startTouchDrive();
 }
 
 function initPortfolioMarqueeBoost() {

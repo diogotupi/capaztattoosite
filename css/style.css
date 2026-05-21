@@ -634,6 +634,11 @@ button {
 
 .marquee-track.is-touch-scroll {
   animation: none !important;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+.marquee--portfolio.is-marquee-css-only .marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 100s) linear infinite !important;
 }
 
 .marquee-group {
@@ -791,6 +796,32 @@ button {
   font-size: 0.85rem;
   color: var(--white);
   margin: 0;
+}
+
+.catalog-reserve {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--section-fg);
+  border: 1px solid var(--section-border);
+  border-radius: 999px;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.catalog-reserve:hover,
+.catalog-reserve:focus-visible {
+  color: var(--white-pure);
+  background: var(--wine);
+  border-color: var(--wine);
+}
+
+.section--light .catalog-reserve {
+  color: var(--black);
+  border-color: rgba(10, 10, 10, 0.25);
 }
 
 /* Lightbox */
