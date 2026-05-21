@@ -9,8 +9,13 @@
   --white: #f5f5f0;
   --white-pure: #ffffff;
   --border: rgba(245, 245, 240, 0.12);
-  --wine: #6e2c3a;
-  --wine-hover: #8a3d4d;
+  --border-light: rgba(10, 10, 10, 0.12);
+  --wine: #820006;
+  --wine-hover: #a30008;
+  --section-bg: var(--black);
+  --section-fg: var(--white);
+  --section-muted: var(--gray-light);
+  --section-border: var(--border);
   --font-body: "Futura", "Futura PT", "Century Gothic", "Trebuchet MS", "Segoe UI", sans-serif;
   --font-logo: "Cormorant Garamond", Georgia, serif;
   --header-h: 72px;
@@ -304,6 +309,8 @@ button {
 }
 
 .hero-video-media {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -352,7 +359,7 @@ button {
 }
 
 .intro-text {
-  color: var(--gray-light);
+  color: var(--section-muted);
   font-size: clamp(1.05rem, 1.8vw, 1.3rem);
   line-height: 1.55;
   margin-bottom: 2.5rem;
@@ -389,10 +396,86 @@ button {
   50% { transform: translateX(-50%) translateY(6px); }
 }
 
-/* Sections */
+/* Sections — alternância preto / branco */
 .section {
   padding: clamp(5rem, 12vw, 8rem) 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--section-border);
+  background: var(--section-bg);
+  color: var(--section-fg);
+}
+
+.section--dark {
+  --section-bg: var(--black);
+  --section-fg: var(--white);
+  --section-muted: var(--gray-light);
+  --section-border: var(--border);
+}
+
+.section--light {
+  --section-bg: var(--white-pure);
+  --section-fg: var(--black);
+  --section-muted: #4a4a4a;
+  --section-border: var(--border-light);
+}
+
+.section--light .section-lead,
+.section--light .intro-text,
+.section--light .gallery-note,
+.section--light .contact-lead {
+  color: var(--section-muted);
+}
+
+.section--light .section-title,
+.section--light .agenda-detail,
+.section--light .contact-waiting,
+.section--light .catalog-project-meta dd {
+  color: var(--section-fg);
+}
+
+.section--light .agenda-city,
+.section--light .catalog-project-meta dt {
+  color: var(--gray);
+}
+
+.section--light .btn-primary {
+  background: var(--black);
+  color: var(--white-pure);
+  border-color: var(--black);
+}
+
+.section--light .btn-primary:hover,
+.section--light .btn-primary:focus-visible {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: var(--white-pure);
+}
+
+.section--light .btn-outline {
+  color: var(--black);
+  border-color: rgba(10, 10, 10, 0.35);
+}
+
+.section--light .btn-outline:hover,
+.section--light .btn-outline:focus-visible {
+  color: var(--white-pure);
+  border-color: var(--wine);
+  background: var(--wine);
+}
+
+.section--light .btn-pill--fill:hover,
+.section--light .btn-pill--fill:focus-visible {
+  background: var(--wine-hover);
+  border-color: var(--wine-hover);
+  color: var(--white-pure);
+}
+
+.section--light .catalog-project-trigger {
+  background: #f0f0ec;
+  border-color: var(--border-light);
+}
+
+.section--light .agenda-item--highlight .agenda-detail {
+  color: var(--black);
 }
 
 .section-title {
@@ -412,7 +495,7 @@ button {
 }
 
 .section-lead {
-  color: var(--gray-light);
+  color: var(--section-muted);
   margin-bottom: 1.25rem;
 }
 
@@ -433,7 +516,7 @@ button {
   align-items: center;
   gap: 0.35rem;
   padding: 1.5rem 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--section-border);
   text-align: center;
 }
 
@@ -450,7 +533,7 @@ button {
   letter-spacing: 0.04em;
 }
 
-.agenda-item--highlight .agenda-detail {
+.section--dark .agenda-item--highlight .agenda-detail {
   color: var(--white-pure);
 }
 
@@ -458,96 +541,61 @@ button {
   margin-top: 0.5rem;
 }
 
-/* Sobre — foto à esquerda, texto à direita */
+/* Sobre — foto e texto centralizados na tela */
 .sobre .container {
+  max-width: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   text-align: left;
 }
 
 .sobre-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 0.85fr) minmax(280px, 1.15fr);
-  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(220px, 300px) minmax(260px, 38ch);
+  gap: clamp(2.5rem, 6vw, 4.5rem);
   align-items: center;
-  width: 100%;
+  width: fit-content;
+  max-width: min(920px, 94vw);
+  margin-inline: auto;
 }
 
 .sobre-image {
   width: 100%;
-}
-
-.sobre-image .image-placeholder {
+  max-width: 300px;
+  justify-self: center;
+  overflow: hidden;
   aspect-ratio: 3 / 4;
-  background: var(--gray-dark);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid var(--section-border);
 }
 
-.image-placeholder span {
-  font-family: var(--font-logo);
-  font-size: 2rem;
-  letter-spacing: 0.4em;
-  text-indent: 0.4em;
-  color: var(--gray);
+.sobre-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 38%;
+  display: block;
+  transform: scale(2);
+  transform-origin: 50% 38%;
 }
 
 .sobre-content {
-  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  min-height: 100%;
 }
 
-.sobre-content .section-title {
-  text-align: left;
-  width: 100%;
-}
-
-.sobre-content .section-title--single {
-  white-space: nowrap;
-}
-
-.sobre-content .text-prose {
-  max-width: 100%;
-  margin-inline: 0;
-  width: 100%;
-}
-
-.sobre-alias {
-  font-size: 1.15rem;
+.sobre-text {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.35vw, 1.2rem);
   font-weight: 400;
-  color: var(--gray-light);
-  margin-bottom: 1.5rem;
-  text-align: left;
-  width: 100%;
-}
-
-.sobre-content p + p {
-  margin-top: 1rem;
-  color: var(--gray-light);
-}
-
-.sobre-content .social-links {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 2rem;
-  justify-content: flex-start;
-}
-
-.social-link {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: none;
-  border-bottom: 1px solid var(--white);
-  padding-bottom: 2px;
-  transition: opacity var(--transition);
-}
-
-.social-link:hover {
-  opacity: 0.6;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  color: var(--section-fg);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  max-width: 42ch;
 }
 
 /* Marquee — fluxo contínuo, preenche a largura da tela */
@@ -642,9 +690,21 @@ button {
 .gallery-note {
   margin-top: 1.5rem;
   font-size: 0.85rem;
-  color: var(--gray);
+  color: var(--section-muted);
   font-style: italic;
   width: 100%;
+}
+
+.gallery-note-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--transition);
+}
+
+.gallery-note-link:hover,
+.gallery-note-link:focus-visible {
+  color: var(--wine);
 }
 
 .portfolio .container:first-child {
@@ -652,12 +712,6 @@ button {
 }
 
 /* Catálogo */
-.catalog-hint {
-  font-size: 0.95rem;
-  color: var(--gray-light);
-  margin-bottom: 2.5rem;
-}
-
 .catalogo .container {
   max-width: 1280px;
 }
@@ -970,10 +1024,21 @@ body.lightbox-open {
   color: var(--wine);
 }
 
+.section--light .contact-email {
+  color: var(--black);
+}
+
 .btn-pill {
   border-radius: 9999px;
   padding: 0.8rem 2.75rem;
   min-width: 11rem;
+}
+
+.btn-pill--fill:hover,
+.btn-pill--fill:focus-visible {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: var(--white-pure);
 }
 
 .contact-lead {
@@ -993,9 +1058,71 @@ body.lightbox-open {
 }
 
 /* Footer */
+/* Mosquinhas fixas — Instagram e WhatsApp */
+.fly-widgets {
+  position: fixed;
+  right: clamp(0.75rem, 3vw, 1.25rem);
+  bottom: clamp(1rem, 4vw, 1.75rem);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  pointer-events: none;
+}
+
+.fly-widget {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  color: var(--white);
+  background: rgba(10, 10, 10, 0.88);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  animation: fly-buzz 4s ease-in-out infinite;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.fly-widget--wa {
+  animation-delay: 1.2s;
+}
+
+.fly-widget:hover,
+.fly-widget:focus-visible {
+  animation: none;
+  transform: scale(1.08) translateY(-2px);
+  border-color: var(--wine);
+  color: var(--wine);
+}
+
+.fly-icon--brand {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+@keyframes fly-buzz {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-2px, -3px) rotate(-4deg);
+  }
+  50% {
+    transform: translate(1px, -5px) rotate(3deg);
+  }
+  75% {
+    transform: translate(3px, -2px) rotate(-2deg);
+  }
+}
+
 .footer {
   padding: 3rem 5vw;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--section-border);
+  background: var(--black);
+  color: var(--white);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1083,19 +1210,10 @@ body.lightbox-open {
     text-align: center;
   }
 
-  .sobre-content .section-title,
-  .sobre-content .section-title--single,
-  .sobre-alias,
-  .sobre-content .text-prose {
+  .sobre-text {
+    max-width: none;
     text-align: center;
-  }
-
-  .sobre-content .section-title--single {
-    white-space: normal;
-  }
-
-  .sobre-content .social-links {
-    justify-content: center;
+    text-align-last: center;
   }
 
   .contact-right {

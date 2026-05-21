@@ -69,7 +69,6 @@ function initScrollReveal() {
   if (catalogHeader) {
     reveal(catalogHeader.querySelector(".section-title"));
     reveal(catalogHeader.querySelector(".section-lead"), 0.06);
-    reveal(catalogHeader.querySelector(".catalog-hint"), 0.12);
   }
   document.querySelectorAll(".catalog-project").forEach((card, i) => {
     reveal(card, 0.15 + i * 0.1);
