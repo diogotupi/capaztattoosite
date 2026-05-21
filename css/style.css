@@ -612,12 +612,23 @@ button {
 .marquee-track {
   display: flex;
   width: max-content;
+  -webkit-animation: marquee-scroll var(--marquee-duration, 45s) linear infinite;
   animation: marquee-scroll var(--marquee-duration, 45s) linear infinite;
   will-change: transform;
 }
 
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
+@media (max-width: 900px), (pointer: coarse) {
+  .marquee--portfolio .marquee-track {
+    will-change: auto;
+    -webkit-animation: marquee-scroll var(--marquee-duration, 100s) linear infinite;
+    animation: marquee-scroll var(--marquee-duration, 100s) linear infinite;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
 }
 
 .marquee-track.is-marquee-boost {
@@ -683,6 +694,17 @@ button {
   animation-direction: reverse;
 }
 
+@-webkit-keyframes marquee-scroll {
+  from {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes marquee-scroll {
   from {
     transform: translateX(0);
@@ -731,7 +753,16 @@ button {
 .catalog-project {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.75rem;
+}
+
+.catalog-project-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
 }
 
 .catalog-project-trigger {
@@ -776,6 +807,8 @@ button {
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   margin: 0;
+  width: 100%;
+  max-width: 16rem;
 }
 
 .catalog-project-meta div {
@@ -800,7 +833,8 @@ button {
 
 .catalog-reserve {
   display: inline-block;
-  margin-top: 0.35rem;
+  align-self: center;
+  margin-top: 0.5rem;
   padding: 0.35rem 0.65rem;
   font-size: 0.62rem;
   font-weight: 600;
@@ -994,7 +1028,7 @@ body.lightbox-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track {
+  .marquee:not(.marquee--portfolio) .marquee-track {
     animation: none;
     flex-wrap: wrap;
     width: 100%;
@@ -1002,10 +1036,17 @@ body.lightbox-open {
     gap: 1rem;
   }
 
-  .marquee-group[aria-hidden="true"] {
+  .marquee:not(.marquee--portfolio) .marquee-group[aria-hidden="true"] {
     display: none;
   }
 
+  .marquee--portfolio .marquee-track {
+    flex-wrap: nowrap;
+    width: max-content;
+    justify-content: flex-start;
+    -webkit-animation: marquee-scroll var(--marquee-duration, 100s) linear infinite !important;
+    animation: marquee-scroll var(--marquee-duration, 100s) linear infinite !important;
+  }
 }
 
 /* Contact — duas colunas */
@@ -1252,9 +1293,50 @@ body.lightbox-open {
   }
 
   .catalog-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    max-width: min(380px, 92vw);
+    margin-inline: auto;
+  }
+
+  .catalog-project-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.65rem;
+    row-gap: 0.15rem;
+    width: 100%;
+    text-align: left;
+    align-items: start;
+  }
+
+  .catalog-project-title {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 0.1rem;
+  }
+
+  .catalog-project-meta {
+    display: contents;
     max-width: none;
-    margin-inline: 0;
+  }
+
+  .catalog-project-meta > div:first-child {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .catalog-project-meta > div:last-child {
+    grid-column: 2;
+    grid-row: 2;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .catalog-reserve {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0.2rem;
   }
 }
 
@@ -1279,12 +1361,6 @@ body.lightbox-open {
 @media (max-width: 560px) {
   .header-end {
     gap: 0.75rem;
-  }
-
-  .catalog-grid {
-    grid-template-columns: 1fr;
-    max-width: 360px;
-    margin-inline: auto;
   }
 }
 

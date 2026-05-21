@@ -11,201 +11,20 @@ function fullSizeSrc(src) {
 
 let marqueeSuppressClick = false;
 
-function waitMarqueeImages(track) {
-  const imgs = track.querySelectorAll("img");
-  return Promise.all(
-    [...imgs].map(
-      (img) =>
-        new Promise((resolve) => {
-          if (img.complete) resolve();
-          else {
-            img.addEventListener("load", resolve, { once: true });
-            img.addEventListener("error", resolve, { once: true });
-          }
-        })
-    )
-  );
-}
-
-function nextFrame() {
-  return new Promise((resolve) => requestAnimationFrame(resolve));
-}
-
 function initPortfolioMarqueeTouch() {
   const marquee = document.querySelector(".marquee--portfolio");
   const track = marquee?.querySelector(".marquee-track");
-  if (!marquee || !track || prefersReducedMotion()) return;
+  if (!marquee || !track) return;
 
-  const mq = mobileMarqueeMq();
-  let active = false;
-  let touchMode = false;
-  let offset = 0;
-  let velocity = 0;
-  let loopLen = 0;
-  let rafId = null;
-  let isTouching = false;
-  let pointerId = null;
-  let lastX = 0;
-  let lastTime = 0;
-  let dragTotal = 0;
-
-  const autoSpeed = 0.55;
-  const friction = 0.94;
-  const minVelocity = 0.06;
-
-  const normalizeOffset = () => {
-    if (loopLen <= 0) return;
-    while (offset <= -loopLen) offset += loopLen;
-    while (offset > 0) offset -= loopLen;
-  };
-
-  const applyTransform = () => {
-    if (!touchMode) return;
-    track.style.transform = `translate3d(${offset}px, 0, 0)`;
-  };
-
-  const measure = () => {
-    const firstGroup = track.querySelector(".marquee-group:not([aria-hidden])");
-    const w = firstGroup?.getBoundingClientRect().width ?? track.scrollWidth / 2;
-    loopLen = w > 0 ? w : track.scrollWidth / 2;
-    if (loopLen > 0) normalizeOffset();
-    applyTransform();
-    return loopLen > 0;
-  };
-
-  const tick = () => {
-    if (!active || !touchMode) return;
-
-    if (!isTouching) {
-      if (Math.abs(velocity) > minVelocity) {
-        offset += velocity;
-        velocity *= friction;
-        normalizeOffset();
-        applyTransform();
-      } else {
-        velocity = 0;
-        offset -= autoSpeed;
-        normalizeOffset();
-        applyTransform();
-      }
-    }
-
-    rafId = requestAnimationFrame(tick);
-  };
-
-  const stopTouchDrive = () => {
-    active = false;
-    touchMode = false;
-    isTouching = false;
-    velocity = 0;
-    marquee.classList.remove("is-touch-drive");
+  /* Celular: só animação CSS (fiável no iPhone 13 e com “Reduzir movimento”). */
+  const ensureCssMarquee = () => {
     track.classList.remove("is-touch-scroll");
     track.style.transform = "";
-    cancelAnimationFrame(rafId);
-    rafId = null;
+    marquee.classList.remove("is-touch-drive", "is-marquee-css-only");
   };
 
-  const startTouchDrive = async () => {
-    stopTouchDrive();
-    if (!mq.matches) return;
-
-    await waitMarqueeImages(track);
-    await nextFrame();
-    await nextFrame();
-
-    if (!measure()) {
-      marquee.classList.add("is-marquee-css-only");
-      return;
-    }
-
-    marquee.classList.remove("is-marquee-css-only");
-    touchMode = true;
-    active = true;
-    offset = 0;
-    velocity = 0;
-    marquee.classList.add("is-touch-drive");
-    track.classList.add("is-touch-scroll");
-    rafId = requestAnimationFrame(tick);
-  };
-
-  const onMqChange = () => {
-    if (mq.matches) startTouchDrive();
-    else {
-      marquee.classList.remove("is-marquee-css-only");
-      stopTouchDrive();
-    }
-  };
-
-  mq.addEventListener("change", onMqChange);
-  window.addEventListener("resize", () => {
-    if (active && touchMode) measure();
-  });
-
-  if ("ResizeObserver" in window) {
-    const ro = new ResizeObserver(() => {
-      if (mq.matches && !touchMode) startTouchDrive();
-      else if (touchMode) measure();
-    });
-    ro.observe(track);
-  }
-
-  marquee.addEventListener(
-    "pointerdown",
-    (e) => {
-      if (!touchMode || e.button !== 0) return;
-      isTouching = true;
-      pointerId = e.pointerId;
-      lastX = e.clientX;
-      lastTime = performance.now();
-      dragTotal = 0;
-      velocity = 0;
-      try {
-        marquee.setPointerCapture(e.pointerId);
-      } catch {
-        /* ignore */
-      }
-    },
-    { passive: true }
-  );
-
-  marquee.addEventListener(
-    "pointermove",
-    (e) => {
-      if (!touchMode || !isTouching || e.pointerId !== pointerId) return;
-      const now = performance.now();
-      const dx = e.clientX - lastX;
-      const dt = Math.max(now - lastTime, 1);
-      dragTotal += Math.abs(dx);
-
-      offset += dx;
-      velocity = (dx / dt) * (1000 / 60);
-      lastX = e.clientX;
-      lastTime = now;
-      normalizeOffset();
-      applyTransform();
-    },
-    { passive: true }
-  );
-
-  const endPointer = (e) => {
-    if (!isTouching || e.pointerId !== pointerId) return;
-    const pid = pointerId;
-    isTouching = false;
-    pointerId = null;
-    try {
-      marquee.releasePointerCapture(pid);
-    } catch {
-      /* ignore */
-    }
-    if (dragTotal > 14) marqueeSuppressClick = true;
-    velocity *= 0.88;
-  };
-
-  marquee.addEventListener("pointerup", endPointer);
-  marquee.addEventListener("pointercancel", endPointer);
-
-  window.addEventListener("load", () => startTouchDrive());
-  startTouchDrive();
+  ensureCssMarquee();
+  mobileMarqueeMq().addEventListener("change", ensureCssMarquee);
 }
 
 function initPortfolioMarqueeBoost() {
