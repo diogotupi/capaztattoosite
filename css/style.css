@@ -1299,44 +1299,49 @@ body.lightbox-open {
   }
 
   .catalog-project-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.65rem;
-    row-gap: 0.15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
     width: 100%;
     text-align: left;
-    align-items: start;
   }
 
   .catalog-project-title {
-    grid-column: 1 / -1;
     text-align: center;
     margin-bottom: 0.1rem;
   }
 
   .catalog-project-meta {
-    display: contents;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
     max-width: none;
+    width: 100%;
   }
 
-  .catalog-project-meta > div:first-child {
-    grid-column: 1;
-    grid-row: 2;
+  .catalog-project-meta > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 0.75rem;
   }
 
-  .catalog-project-meta > div:last-child {
-    grid-column: 2;
-    grid-row: 2;
-    align-items: flex-end;
+  .catalog-project-meta dt {
+    flex: 0 0 auto;
+  }
+
+  .catalog-project-meta dd {
+    flex: 0 0 auto;
+    margin-left: auto;
     text-align: right;
   }
 
   .catalog-reserve {
-    grid-column: 2;
-    grid-row: 3;
-    justify-self: end;
-    align-self: center;
-    margin-top: 0.2rem;
+    align-self: flex-end;
+    margin-top: 0.15rem;
   }
 }
 
