@@ -11,6 +11,16 @@
     <title>CAPAZ TATTOO — AR</title>
     <script>
       (function () {
+        if (location.hostname === "capaztattoo.com") {
+          location.replace(
+            "https://www.capaztattoo.com" + location.pathname + location.search + location.hash
+          );
+          return;
+        }
+      })();
+    </script>
+    <script>
+      (function () {
         var p = location.pathname.replace(/\/+$/, "") || "/";
         if (p === "/ar" || p.endsWith("/ar")) {
           if (!location.pathname.endsWith("/")) {

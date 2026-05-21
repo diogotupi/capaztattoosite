@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Capaz Tattoo — Arte para convívio diário. Tatuagens únicas por Camila Paz.">
+  <script>
+    if (location.hostname === "capaztattoo.com") {
+      location.replace("https://www.capaztattoo.com" + location.pathname + location.search + location.hash);
+    }
+  </script>
   <title>Capaz Tattoo</title>
   <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_32,h_32,c_fill/v1779324858/tattoo-favicon_erzasm.png">
   <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_192,h_192,c_fill/v1779324858/tattoo-favicon_erzasm.png">
@@ -30,7 +35,7 @@
         <li><a href="#catalogo" data-i18n="nav.catalog">Catálogo</a></li>
         <li><a href="#agenda" data-i18n="nav.agenda">Agenda</a></li>
         <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
-        <li><a href="ar/" class="nav-link-ar" data-i18n="nav.ar">A.R</a></li>
+        <li><a href="https://www.capaztattoo.com/ar/" class="nav-link-ar" data-i18n="nav.ar">A.R</a></li>
       </ul>
     </nav>
     <div class="header-end">
