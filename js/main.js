@@ -143,6 +143,32 @@ function initActiveNav() {
   window.addEventListener("scroll", setActiveFromScroll, { passive: true });
 }
 
+function initHeroVideo() {
+  const video = document.querySelector(".hero-video-media");
+  if (!video) return;
+
+  video.muted = true;
+  video.loop = true;
+  video.setAttribute("playsinline", "");
+
+  const play = () => {
+    const p = video.play();
+    if (p?.catch) p.catch(() => {});
+  };
+
+  video.addEventListener("ended", () => {
+    video.currentTime = 0;
+    play();
+  });
+
+  video.addEventListener("loadeddata", play);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) play();
+  });
+
+  play();
+}
+
 function initParallax() {
   if (prefersReducedMotion()) return;
 
@@ -199,6 +225,7 @@ navMenu.querySelectorAll("a").forEach((link) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  initHeroVideo();
   initScrollReveal();
   initActiveNav();
   initParallax();
