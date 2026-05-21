@@ -1,0 +1,10 @@
+{
+  "name": "capaztattoosite",
+  "private": true,
+  "description": "Site estático Capaz Tattoo — deploy via git push (GitHub Pages)",
+  "scripts": {
+    "build:ar": "powershell -ExecutionPolicy Bypass -File scripts/sync-ar.ps1",
+    "build": "npm run build:ar",
+    "serve": "npx --yes serve . -l 3000"
+  }
+}

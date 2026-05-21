@@ -21,11 +21,14 @@ npx serve .
 
 ## App AR (`/ar`)
 
-O projeto [tattooar](../tattooar) é compilado para a pasta `ar/`. Para atualizar:
+O projeto [tattooar](../tattooar) é compilado para a pasta `ar/` com base **`/ar/`** (obrigatório em `capaztattoo.com/ar`). Para atualizar:
 
 ```powershell
-.\scripts\sync-ar.ps1
+npm run build:ar
+# ou: .\scripts\sync-ar.ps1
 ```
+
+Depois faça **commit da pasta `ar/`** e `git push` — o site principal não usa `npm` na raiz para o HTML; só o passo acima regera o AR.
 
 ## Estrutura
 
