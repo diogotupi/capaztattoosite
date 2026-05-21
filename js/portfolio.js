@@ -2,8 +2,165 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+const mobileMarqueeMq = () =>
+  window.matchMedia("(max-width: 900px), (pointer: coarse)");
+
 function fullSizeSrc(src) {
   return src.replace(/\/upload\/([^/]+)\//, "/upload/q_auto/f_auto,w_1600/");
+}
+
+let marqueeSuppressClick = false;
+
+function initPortfolioMarqueeTouch() {
+  const marquee = document.querySelector(".marquee--portfolio");
+  const track = marquee?.querySelector(".marquee-track");
+  if (!marquee || !track || prefersReducedMotion()) return;
+
+  const mq = mobileMarqueeMq();
+  let active = false;
+  let offset = 0;
+  let velocity = 0;
+  let loopLen = 0;
+  let rafId = null;
+  let isTouching = false;
+  let pointerId = null;
+  let lastX = 0;
+  let lastTime = 0;
+  let dragTotal = 0;
+
+  const autoSpeed = 0.55;
+  const friction = 0.94;
+  const minVelocity = 0.06;
+
+  const normalizeOffset = () => {
+    if (loopLen <= 0) return;
+    while (offset <= -loopLen) offset += loopLen;
+    while (offset > 0) offset -= loopLen;
+  };
+
+  const applyTransform = () => {
+    track.style.transform = `translate3d(${offset}px, 0, 0)`;
+  };
+
+  const measure = () => {
+    loopLen = track.scrollWidth / 2;
+    if (loopLen > 0) normalizeOffset();
+    applyTransform();
+  };
+
+  const tick = () => {
+    if (!active) return;
+
+    if (!isTouching) {
+      if (Math.abs(velocity) > minVelocity) {
+        offset += velocity;
+        velocity *= friction;
+        normalizeOffset();
+        applyTransform();
+      } else {
+        velocity = 0;
+        offset -= autoSpeed;
+        normalizeOffset();
+        applyTransform();
+      }
+    }
+
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const enable = () => {
+    if (active || !mq.matches) return;
+    active = true;
+    offset = 0;
+    velocity = 0;
+    marquee.classList.add("is-touch-drive");
+    track.classList.add("is-touch-scroll");
+    measure();
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const disable = () => {
+    if (!active) return;
+    active = false;
+    isTouching = false;
+    velocity = 0;
+    marquee.classList.remove("is-touch-drive");
+    track.classList.remove("is-touch-scroll");
+    track.style.transform = "";
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  };
+
+  const onMqChange = () => {
+    if (mq.matches) enable();
+    else disable();
+  };
+
+  mq.addEventListener("change", onMqChange);
+  window.addEventListener("resize", () => {
+    if (active) measure();
+  });
+
+  track.querySelectorAll("img").forEach((img) => {
+    if (!img.complete) img.addEventListener("load", measure, { once: true });
+  });
+
+  marquee.addEventListener(
+    "pointerdown",
+    (e) => {
+      if (!active || e.button !== 0) return;
+      isTouching = true;
+      pointerId = e.pointerId;
+      lastX = e.clientX;
+      lastTime = performance.now();
+      dragTotal = 0;
+      velocity = 0;
+      marquee.setPointerCapture(e.pointerId);
+    },
+    { passive: true }
+  );
+
+  marquee.addEventListener(
+    "pointermove",
+    (e) => {
+      if (!active || !isTouching || e.pointerId !== pointerId) return;
+      const now = performance.now();
+      const dx = e.clientX - lastX;
+      const dt = Math.max(now - lastTime, 1);
+      dragTotal += Math.abs(dx);
+
+      offset += dx;
+      velocity = (dx / dt) * (1000 / 60);
+      lastX = e.clientX;
+      lastTime = now;
+      normalizeOffset();
+      applyTransform();
+    },
+    { passive: true }
+  );
+
+  const endPointer = (e) => {
+    if (!isTouching || e.pointerId !== pointerId) return;
+    const pid = pointerId;
+    isTouching = false;
+    pointerId = null;
+    try {
+      marquee.releasePointerCapture(pid);
+    } catch {
+      /* ignore */
+    }
+    if (dragTotal > 14) marqueeSuppressClick = true;
+    velocity *= 0.88;
+  };
+
+  marquee.addEventListener("pointerup", endPointer);
+  marquee.addEventListener("pointercancel", endPointer);
+
+  requestAnimationFrame(() => {
+    onMqChange();
+    if (active) measure();
+  });
 }
 
 function initPortfolioMarqueeBoost() {
@@ -11,17 +168,20 @@ function initPortfolioMarqueeBoost() {
   const track = marquee?.querySelector(".marquee-track");
   if (!marquee || !track || prefersReducedMotion()) return;
 
+  const mq = mobileMarqueeMq();
   let lastX = null;
   let lastTime = 0;
   let idleTimer = null;
 
   const setBoost = (on) => {
+    if (mq.matches) return;
     track.classList.toggle("is-marquee-boost", on);
   };
 
   marquee.addEventListener(
     "mousemove",
     (e) => {
+      if (mq.matches) return;
       const now = performance.now();
       if (lastX !== null) {
         const dt = Math.max(now - lastTime, 16);
@@ -172,8 +332,9 @@ function initPortfolioLightbox() {
   };
 
   marquee?.addEventListener("click", (e) => {
-    if (suppressClick) {
+    if (suppressClick || marqueeSuppressClick) {
       suppressClick = false;
+      marqueeSuppressClick = false;
       return;
     }
     const item = e.target.closest(".marquee-item");
@@ -259,6 +420,7 @@ function initPortfolioLightbox() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initPortfolioMarqueeTouch();
   initPortfolioMarqueeBoost();
   initPortfolioLightbox();
 });

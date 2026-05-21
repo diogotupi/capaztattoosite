@@ -1,0 +1,11 @@
+Pasta de vídeos do AR (ficheiros estáticos no deploy)
+=====================================================
+
+O pacote `public/bundles/born-to-be.json` referencia `videos/borntobe.mp4`.
+Esse ficheiro tem de existir AQUI, com o mesmo nome, para o AR carregar o vídeo.
+
+Depois de `npm run build`, o vídeo fica em /videos/borntobe.mp4 no site (ou
+/tattooar/videos/borntobe.mp4 se usares VITE_BASE_PATH=/tattooar/).
+
+Nota: vídeos e JSON grandes aumentam o tamanho do deploy; GitHub Pages aceita
+ficheiros grandes dentro dos limites da conta/repositório.

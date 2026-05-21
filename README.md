@@ -16,9 +16,18 @@ npx serve .
 
 ## Deploy
 
-Netlify, Vercel ou GitHub Pages — envie a pasta do projeto.
+- **GitHub Pages:** https://github.com/diogotupi/capaztattoosite
+- **Domínio personalizado:** configure `capaztattoo.com` nas Settings → Pages do repositório (ficheiro `CNAME` com `capaztattoo.com`). O AR fica em **https://capaztattoo.com/ar/**
+
+## App AR (`/ar`)
+
+O projeto [tattooar](../tattooar) é compilado para a pasta `ar/`. Para atualizar:
+
+```powershell
+.\scripts\sync-ar.ps1
+```
 
 ## Estrutura
 
-- Início → Sobre → Portfólio → Catálogo → Agenda → Contato
+- Início → Sobre → Portfólio → Catálogo → Agenda → Contato → **A.R** (`/ar`)
 - Carrosséis contínuos no portfólio e no catálogo

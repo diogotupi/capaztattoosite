@@ -580,6 +580,14 @@ button {
   cursor: zoom-in;
 }
 
+.marquee--portfolio.is-touch-drive {
+  touch-action: pan-y;
+}
+
+.marquee-track.is-touch-scroll {
+  animation: none !important;
+}
+
 .marquee-group {
   display: flex;
   flex-shrink: 0;
