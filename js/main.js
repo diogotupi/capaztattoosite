@@ -63,7 +63,10 @@ function initScrollReveal() {
   // Portfólio e catálogo
   revealStagger(document.querySelector(".portfolio .container"), ":scope > *", 0.08);
   reveal(document.querySelector(".portfolio .container + .container"));
-  reveal(document.querySelector(".marquee--portfolio"), 0.1);
+  const portfolioMarquee = document.querySelector(".marquee--portfolio");
+  if (portfolioMarquee) {
+    portfolioMarquee.classList.add("reveal", "is-visible");
+  }
 
   const catalogHeader = document.querySelector(".catalogo .container");
   if (catalogHeader) {
@@ -148,23 +151,50 @@ function initHeroVideo() {
   if (!video) return;
 
   video.muted = true;
+  video.defaultMuted = true;
   video.loop = true;
+  video.setAttribute("loop", "");
+  video.setAttribute("muted", "");
   video.setAttribute("playsinline", "");
+  video.setAttribute("webkit-playsinline", "");
+  video.playsInline = true;
 
   const play = () => {
     const p = video.play();
     if (p?.catch) p.catch(() => {});
   };
 
+  const loopGuard = () => {
+    const d = video.duration;
+    if (!d || !Number.isFinite(d)) return;
+    if (video.currentTime >= d - 0.12) {
+      video.currentTime = 0;
+      play();
+    }
+  };
+
   video.addEventListener("ended", () => {
     video.currentTime = 0;
     play();
   });
-
+  video.addEventListener("timeupdate", loopGuard);
+  video.addEventListener("loadedmetadata", play);
   video.addEventListener("loadeddata", play);
+  video.addEventListener("canplay", play);
+  video.addEventListener("stalled", play);
+  video.addEventListener("suspend", play);
+
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) play();
   });
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries[0]?.isIntersecting) play();
+    },
+    { threshold: 0.05 }
+  );
+  io.observe(video);
 
   play();
 }

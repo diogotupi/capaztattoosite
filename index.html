@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Capaz Tattoo — Arte para convívio diário. Tatuagens únicas por Camila Paz.">
   <script>
-    if (location.hostname === "capaztattoo.com") {
-      location.replace("https://www.capaztattoo.com" + location.pathname + location.search + location.hash);
-    }
+    (function () {
+      var host = location.hostname;
+      if (host !== "capaztattoo.com" && host !== "www.capaztattoo.com") return;
+      if (host !== "www.capaztattoo.com" || location.protocol !== "https:") {
+        location.replace("https://www.capaztattoo.com" + location.pathname + location.search + location.hash);
+      }
+    })();
   </script>
   <title>Capaz Tattoo</title>
   <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_32,h_32,c_fill/v1779324858/tattoo-favicon_erzasm.png">
@@ -51,9 +55,8 @@
   <main>
     <section class="hero" id="home">
       <div class="hero-video">
-        <video class="hero-video-media" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true">
-          <source src="https://res.cloudinary.com/db5hfdjix/video/upload/q_auto/f_mp4/v1779324239/capaz-site_hocyaj.mp4" type="video/mp4">
-          <source src="https://res.cloudinary.com/db5hfdjix/video/upload/q_auto/f_auto/v1779324239/capaz-site_hocyaj.mov" type="video/quicktime">
+        <video class="hero-video-media" autoplay muted loop playsinline disablepictureinpicture preload="auto" aria-hidden="true">
+          <source src="https://res.cloudinary.com/db5hfdjix/video/upload/q_auto/f_mp4,vc_h264,ac_none/v1779324239/capaz-site_hocyaj.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay" aria-hidden="true"></div>
       </div>
@@ -103,6 +106,8 @@
         <h2 class="section-title" data-i18n="portfolio.title">PORTFOLIO</h2>
       </div>
       <div class="marquee marquee--portfolio" aria-label="Galeria de trabalhos">
+        <button type="button" class="marquee-control marquee-control--prev" data-marquee-prev aria-label="Trabalhos anteriores">‹</button>
+        <button type="button" class="marquee-control marquee-control--next" data-marquee-next aria-label="Próximos trabalhos">›</button>
         <div class="marquee-track" style="--marquee-duration: 100s" data-base-duration="100">
           <div class="marquee-group" id="portfolioMarqueeGroup">
             <figure class="marquee-item"><div class="marquee-img"><img src="https://res.cloudinary.com/db5hfdjix/image/upload/q_auto/f_auto,w_800/v1779316677/EF1F2B7A-8EBD-4D09-B183-F2AEB62F5E0E_oc2eo9.png" alt="" loading="lazy" width="800" height="800"></div></figure>
@@ -147,10 +152,13 @@
             </button>
             <div class="catalog-project-info">
               <h3 class="catalog-project-title">jarro com lírio</h3>
-              <dl class="catalog-project-meta">
-                <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
-                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 550</dd></div>
-              </dl>
+              <div class="catalog-project-actions">
+                <dl class="catalog-project-meta">
+                  <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
+                  <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 550</dd></div>
+                </dl>
+                <a href="https://wa.me/5511932318017?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20o%20projeto%20jarro%20com%20l%C3%ADrio." class="catalog-reserve" target="_blank" rel="noopener noreferrer" data-i18n="catalog.reserve">reservar</a>
+              </div>
             </div>
           </article>
           <article class="catalog-project">
@@ -159,10 +167,13 @@
             </button>
             <div class="catalog-project-info">
               <h3 class="catalog-project-title">buquê de jibóia</h3>
-              <dl class="catalog-project-meta">
-                <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
-                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 550</dd></div>
-              </dl>
+              <div class="catalog-project-actions">
+                <dl class="catalog-project-meta">
+                  <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
+                  <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 550</dd></div>
+                </dl>
+                <a href="https://wa.me/5511932318017?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20o%20projeto%20buqu%C3%AA%20de%20jib%C3%B3ia." class="catalog-reserve" target="_blank" rel="noopener noreferrer" data-i18n="catalog.reserve">reservar</a>
+              </div>
             </div>
           </article>
           <article class="catalog-project">
@@ -171,10 +182,13 @@
             </button>
             <div class="catalog-project-info">
               <h3 class="catalog-project-title">eu vejo amor em tudo</h3>
-              <dl class="catalog-project-meta">
-                <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
-                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 650</dd></div>
-              </dl>
+              <div class="catalog-project-actions">
+                <dl class="catalog-project-meta">
+                  <div><dt data-i18n="catalog.min">mínimo</dt><dd>12 cm</dd></div>
+                  <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 650</dd></div>
+                </dl>
+                <a href="https://wa.me/5511932318017?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20o%20projeto%20eu%20vejo%20amor%20em%20tudo." class="catalog-reserve" target="_blank" rel="noopener noreferrer" data-i18n="catalog.reserve">reservar</a>
+              </div>
             </div>
           </article>
           <article class="catalog-project">
@@ -183,10 +197,13 @@
             </button>
             <div class="catalog-project-info">
               <h3 class="catalog-project-title">projeto floral</h3>
-              <dl class="catalog-project-meta">
-                <div><dt data-i18n="catalog.min">mínimo</dt><dd>30 cm</dd></div>
-                <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 1.800</dd></div>
-              </dl>
+              <div class="catalog-project-actions">
+                <dl class="catalog-project-meta">
+                  <div><dt data-i18n="catalog.min">mínimo</dt><dd>30 cm</dd></div>
+                  <div><dt data-i18n="catalog.price">preço</dt><dd>R$ 1.800</dd></div>
+                </dl>
+                <a href="https://wa.me/5511932318017?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20o%20projeto%20projeto%20floral." class="catalog-reserve" target="_blank" rel="noopener noreferrer" data-i18n="catalog.reserve">reservar</a>
+              </div>
             </div>
           </article>
         </div>

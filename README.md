@@ -20,6 +20,14 @@ npx serve .
 - **Domínio:** use sempre **https://www.capaztattoo.com** (ficheiro `CNAME` = `www.capaztattoo.com`). O AR fica em **https://www.capaztattoo.com/ar/**
 - **Não confundir** com [diogotupi.github.io/tattooar](https://diogotupi.github.io/tattooar/) — é outro deploy (base `/tattooar/`), no repo [tattooar](../tattooar).
 
+### Alerta de segurança no browser
+
+Se o Safari/Chrome mostra aviso ao abrir o site, quase sempre é **HTTPS/DNS**, não um certificado no código:
+
+1. Use **https://www.capaztattoo.com** (não `http://` nem `capaztattoo.com` sem `www`).
+2. No registrador: `www` → CNAME `diogotupi.github.io`.
+3. Em **GitHub → Settings → Pages**: domínio `www.capaztattoo.com` e certificado com estado **Certificate issued** (se estiver `dns_changed`, aguarde ou corrija o DNS).
+
 ### Por que o AR pode falhar em capaztattoo.com
 
 1. **URL sem `www`** — `capaztattoo.com` pode não apontar para o GitHub Pages; o site redireciona para `www`.

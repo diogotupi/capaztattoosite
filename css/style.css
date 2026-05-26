@@ -609,6 +609,63 @@ button {
   mask-image: none;
 }
 
+.marquee--portfolio {
+  position: relative;
+  touch-action: pan-y;
+}
+
+.marquee--portfolio.is-js-marquee {
+  touch-action: none;
+}
+
+.marquee--portfolio.is-js-marquee .marquee-track {
+  animation: none !important;
+  will-change: transform;
+}
+
+.marquee-control {
+  display: none;
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.72);
+  color: var(--white);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.marquee-control:hover,
+.marquee-control:focus-visible {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: var(--white-pure);
+}
+
+.marquee-control--prev {
+  left: clamp(0.35rem, 2vw, 1rem);
+}
+
+.marquee-control--next {
+  right: clamp(0.35rem, 2vw, 1rem);
+}
+
+@media (min-width: 901px) and (hover: hover) {
+  .marquee-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .marquee-track {
   display: flex;
   width: max-content;
@@ -820,6 +877,45 @@ button {
   margin: 0;
 }
 
+.catalog-project-actions {
+  width: 100%;
+}
+
+.catalog-reserve {
+  display: inline-block;
+  padding: 0.32rem 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--wine);
+  background: transparent;
+  border: 1px solid var(--wine);
+  border-radius: 999px;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.catalog-reserve:hover,
+.catalog-reserve:focus-visible {
+  color: var(--white-pure);
+  background: var(--wine);
+  border-color: var(--wine);
+}
+
+@media (min-width: 901px) {
+  .catalog-project-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .catalog-reserve {
+    align-self: center;
+    margin-top: 0.15rem;
+  }
+}
+
 /* Lightbox */
 .lightbox {
   position: fixed;
@@ -987,6 +1083,12 @@ body.lightbox-open {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--gray);
+}
+
+@media (max-width: 900px) {
+  .lightbox--portfolio .lightbox-nav {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1258,6 +1360,60 @@ body.lightbox-open {
     grid-template-columns: repeat(2, 1fr);
     max-width: none;
     margin-inline: 0;
+  }
+
+  .catalog-project-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr minmax(4.1rem, auto);
+    grid-template-rows: auto auto;
+    column-gap: 0.45rem;
+    row-gap: 0.18rem;
+    width: min(100%, 17.25rem);
+    margin-inline: auto;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .catalog-project-meta {
+    display: contents;
+  }
+
+  .catalog-project-meta > div {
+    display: contents;
+  }
+
+  .catalog-project-meta > div:first-child dt {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .catalog-project-meta > div:first-child dd {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .catalog-project-meta > div:last-child dt {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .catalog-project-meta > div:last-child dd {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .catalog-project-meta dt,
+  .catalog-project-meta dd {
+    text-align: center;
+    margin: 0;
+  }
+
+  .catalog-reserve {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: center;
+    margin: 0;
+    white-space: nowrap;
   }
 }
 
