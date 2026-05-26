@@ -157,72 +157,85 @@ function initPortfolioMarquee() {
     }, 3200);
   };
 
-  marquee.addEventListener(
-    "pointerdown",
-    (e) => {
-      if (loopLen <= 0 || e.button !== 0) return;
+  let pointerActive = false;
+  let startPointerX = 0;
+
+  const onTrackPointerDown = (e) => {
+    if (e.button !== 0 || e.target.closest(".marquee-control")) return;
+    if (!running) boot();
+    if (loopLen <= 0) return;
+
+    pointerActive = true;
+    pointerId = e.pointerId;
+    startPointerX = e.clientX;
+    lastX = e.clientX;
+    lastTime = performance.now();
+    dragTotal = 0;
+    isDragging = false;
+    velocity = 0;
+  };
+
+  const onTrackPointerMove = (e) => {
+    if (!pointerActive || e.pointerId !== pointerId) return;
+
+    const totalDx = e.clientX - startPointerX;
+    if (!isDragging && Math.abs(totalDx) > 8) {
       isDragging = true;
-      pointerId = e.pointerId;
-      lastX = e.clientX;
-      lastTime = performance.now();
-      dragTotal = 0;
-      velocity = 0;
       try {
-        marquee.setPointerCapture(e.pointerId);
+        track.setPointerCapture(e.pointerId);
       } catch {
         /* ignore */
       }
-    },
-    { passive: true }
-  );
-
-  marquee.addEventListener(
-    "pointermove",
-    (e) => {
-      if (!isDragging || e.pointerId !== pointerId) return;
-      const now = performance.now();
-      const dx = e.clientX - lastX;
-      const dt = Math.max(now - lastTime, 1);
-      dragTotal += Math.abs(dx);
-      offset += dx;
-      velocity = (dx / dt) * (1000 / 60);
-      lastX = e.clientX;
-      lastTime = now;
-      normalize();
-      apply();
-    },
-    { passive: true }
-  );
-
-  const endPointer = (e) => {
-    if (!isDragging || e.pointerId !== pointerId) return;
-    isDragging = false;
-    pointerId = null;
-    try {
-      marquee.releasePointerCapture(e.pointerId);
-    } catch {
-      /* ignore */
     }
-    if (dragTotal > 14) marqueeSuppressClick = true;
-    velocity *= 0.85;
+    if (!isDragging) return;
+
+    const now = performance.now();
+    const dx = e.clientX - lastX;
+    const dt = Math.max(now - lastTime, 1);
+    dragTotal += Math.abs(dx);
+    offset += dx;
+    velocity = (dx / dt) * (1000 / 60);
+    lastX = e.clientX;
+    lastTime = now;
+    normalize();
+    apply();
   };
 
-  marquee.addEventListener("pointerup", endPointer);
-  marquee.addEventListener("pointercancel", endPointer);
+  const onTrackPointerEnd = (e) => {
+    if (!pointerActive || e.pointerId !== pointerId) return;
+    const pid = pointerId;
+    pointerActive = false;
+    pointerId = null;
 
-  prevBtn?.addEventListener("click", (e) => {
+    if (isDragging) {
+      try {
+        track.releasePointerCapture(pid);
+      } catch {
+        /* ignore */
+      }
+      if (dragTotal > 12 && e.pointerType === "touch") marqueeSuppressClick = true;
+      velocity *= 0.85;
+    }
+
+    isDragging = false;
+  };
+
+  track.addEventListener("pointerdown", onTrackPointerDown, { passive: true });
+  track.addEventListener("pointermove", onTrackPointerMove, { passive: true });
+  track.addEventListener("pointerup", onTrackPointerEnd, { passive: true });
+  track.addEventListener("pointercancel", onTrackPointerEnd, { passive: true });
+
+  const onArrow = (dir) => (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (!running) boot();
-    nudge(1);
-  });
+    nudge(dir);
+  };
 
-  nextBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!running) boot();
-    nudge(-1);
-  });
+  prevBtn?.addEventListener("pointerup", onArrow(1));
+  nextBtn?.addEventListener("pointerup", onArrow(-1));
+  prevBtn?.addEventListener("click", onArrow(1));
+  nextBtn?.addEventListener("click", onArrow(-1));
 
   window.addEventListener("resize", () => measure());
   if ("ResizeObserver" in window) {
@@ -393,19 +406,22 @@ function initPortfolioLightbox() {
     return slides.findIndex((s) => s.thumb === src || s.full === src);
   };
 
-  marquee?.addEventListener("click", (e) => {
-    if (e.target.closest(".marquee-control")) return;
-    if (suppressClick || marqueeSuppressClick) {
-      suppressClick = false;
+  const openFromItem = (item) => {
+    if (marqueeSuppressClick) {
       marqueeSuppressClick = false;
       return;
     }
-    const item = e.target.closest(".marquee-item");
-    if (!item) return;
     const thumb = item.querySelector("img");
     if (!thumb) return;
     const i = findIndexFromImg(thumb);
     if (i >= 0) open(i);
+  };
+
+  group.querySelectorAll(".marquee-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openFromItem(item);
+    });
   });
 
   prevBtn?.addEventListener("click", (e) => {
