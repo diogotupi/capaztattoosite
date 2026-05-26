@@ -45,6 +45,8 @@ function initPortfolioMarquee() {
   let lastX = 0;
   let lastTime = 0;
   let dragTotal = 0;
+  let hoverPaused = false;
+  const desktopMq = desktopMarqueeMq();
 
   const normalize = () => {
     if (loopLen <= 0) return;
@@ -77,7 +79,9 @@ function initPortfolioMarquee() {
   };
 
   const tick = () => {
-    if (!isDragging && loopLen > 0) {
+    const allowAuto = !isDragging && loopLen > 0 && !(hoverPaused && desktopMq.matches);
+
+    if (allowAuto) {
       if (Math.abs(velocity) > 0.08) {
         offset += velocity;
         velocity *= 0.94;
@@ -225,6 +229,14 @@ function initPortfolioMarquee() {
   track.addEventListener("pointerup", onTrackPointerEnd, { passive: true });
   track.addEventListener("pointercancel", onTrackPointerEnd, { passive: true });
 
+  const setHoverPaused = (paused) => {
+    if (!desktopMq.matches) return;
+    hoverPaused = paused;
+  };
+
+  marquee.addEventListener("mouseenter", () => setHoverPaused(true));
+  marquee.addEventListener("mouseleave", () => setHoverPaused(false));
+
   const onArrow = (dir) => (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -232,8 +244,6 @@ function initPortfolioMarquee() {
     nudge(dir);
   };
 
-  prevBtn?.addEventListener("pointerup", onArrow(1));
-  nextBtn?.addEventListener("pointerup", onArrow(-1));
   prevBtn?.addEventListener("click", onArrow(1));
   nextBtn?.addEventListener("click", onArrow(-1));
 
