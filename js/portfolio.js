@@ -38,7 +38,7 @@ function initPortfolioMarquee() {
   let loopLen = 0;
   let offset = 0;
   let velocity = 0;
-  let autoSpeed = 0.45;
+  let autoSpeed = 0.55;
   let rafId = null;
   let isDragging = false;
   let pointerId = null;
@@ -58,14 +58,26 @@ function initPortfolioMarquee() {
 
   const measure = () => {
     const group = track.querySelector(".marquee-group:not([aria-hidden])");
-    loopLen = group?.getBoundingClientRect().width ?? track.scrollWidth / 2;
-    if (loopLen > 0) normalize();
+    if (!group) return false;
+
+    let w = group.scrollWidth || group.getBoundingClientRect().width;
+    if (w < 40) {
+      w = [...group.querySelectorAll(".marquee-item")].reduce(
+        (sum, el) => sum + el.getBoundingClientRect().width,
+        0
+      );
+    }
+    if (w < 40) w = track.scrollWidth / 2;
+    if (w < 40) return false;
+
+    loopLen = w;
+    normalize();
     apply();
-    return loopLen > 0;
+    return true;
   };
 
   const tick = () => {
-    if (!isDragging) {
+    if (!isDragging && loopLen > 0) {
       if (Math.abs(velocity) > 0.08) {
         offset += velocity;
         velocity *= 0.94;
@@ -81,21 +93,68 @@ function initPortfolioMarquee() {
     rafId = requestAnimationFrame(tick);
   };
 
+  let running = false;
+
+  const enableJsDrive = () => {
+    marquee.classList.add("is-js-marquee");
+    track.style.animation = "none";
+    track.style.webkitAnimation = "none";
+  };
+
+  const enableCssFallback = () => {
+    running = false;
+    marquee.classList.remove("is-js-marquee");
+    track.style.animation = "";
+    track.style.webkitAnimation = "";
+    track.style.transform = "";
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  };
+
+  const boot = () => {
+    if (!measure()) return false;
+    enableJsDrive();
+    if (!running) {
+      running = true;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
+    }
+    return true;
+  };
+
   const nudge = (dir) => {
-    const step = Math.min(loopLen * 0.22, 320);
+    if (loopLen <= 0 && !measure()) return;
+    const step = Math.min(loopLen * 0.28, 380);
     offset += dir * step;
+    velocity = 0;
     normalize();
     apply();
   };
 
   const start = async () => {
-    marquee.classList.add("is-js-marquee");
-    track.style.animation = "none";
     await waitMarqueeImages(track);
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-    if (!measure()) return;
-    cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(tick);
+
+    if (boot()) return;
+
+    for (const ms of [120, 400, 900, 2000]) {
+      await new Promise((r) => setTimeout(r, ms));
+      if (boot()) return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && boot()) io.disconnect();
+      },
+      { threshold: 0.05, rootMargin: "80px 0px" }
+    );
+    io.observe(marquee);
+
+    window.addEventListener("load", () => boot(), { once: true });
+
+    setTimeout(() => {
+      if (!running && !boot()) enableCssFallback();
+    }, 3200);
   };
 
   marquee.addEventListener(
@@ -152,12 +211,16 @@ function initPortfolioMarquee() {
   marquee.addEventListener("pointercancel", endPointer);
 
   prevBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
+    if (!running) boot();
     nudge(1);
   });
 
   nextBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
+    if (!running) boot();
     nudge(-1);
   });
 
