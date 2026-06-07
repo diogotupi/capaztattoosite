@@ -164,37 +164,58 @@ function initHeroVideo() {
     if (p?.catch) p.catch(() => {});
   };
 
-  const loopGuard = () => {
+  const restart = () => {
+    try {
+      video.currentTime = 0.001;
+    } catch {
+      video.currentTime = 0;
+    }
+    play();
+  };
+
+  const enforceLoop = () => {
     const d = video.duration;
     if (!d || !Number.isFinite(d)) return;
-    if (video.currentTime >= d - 0.12) {
-      video.currentTime = 0;
-      play();
+    if (video.ended || video.currentTime >= d - 0.25) {
+      restart();
     }
   };
 
-  video.addEventListener("ended", () => {
-    video.currentTime = 0;
+  const onReady = () => {
+    video.loop = true;
     play();
-  });
-  video.addEventListener("timeupdate", loopGuard);
-  video.addEventListener("loadedmetadata", play);
-  video.addEventListener("loadeddata", play);
+  };
+
+  video.addEventListener("ended", restart);
+  video.addEventListener("timeupdate", enforceLoop);
+  video.addEventListener("loadedmetadata", onReady);
+  video.addEventListener("loadeddata", onReady);
   video.addEventListener("canplay", play);
   video.addEventListener("stalled", play);
-  video.addEventListener("suspend", play);
 
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) play();
+    if (!document.hidden) {
+      enforceLoop();
+      play();
+    }
   });
 
   const io = new IntersectionObserver(
     (entries) => {
-      if (entries[0]?.isIntersecting) play();
+      if (entries[0]?.isIntersecting) {
+        enforceLoop();
+        play();
+      }
     },
     { threshold: 0.05 }
   );
   io.observe(video);
+
+  // iOS/Safari às vezes não dispara `ended` em vídeo streamado
+  window.setInterval(() => {
+    if (document.hidden) return;
+    enforceLoop();
+  }, 900);
 
   play();
 }
