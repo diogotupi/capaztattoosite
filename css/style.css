@@ -901,11 +901,16 @@ button {
   transition: background var(--transition), color var(--transition), border-color var(--transition);
 }
 
-.catalog-reserve:hover,
-.catalog-reserve:focus-visible {
+.catalog-reserve:not(.catalog-reserve--unavailable):hover,
+.catalog-reserve:not(.catalog-reserve--unavailable):focus-visible {
   color: var(--white-pure);
   background: var(--wine);
   border-color: var(--wine);
+}
+
+.catalog-reserve--unavailable {
+  color: #aaa;
+  border-color: #666;
 }
 
 @media (min-width: 901px) {
