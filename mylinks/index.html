@@ -38,7 +38,8 @@
     .copy { flex: 1; }
     .title { display: block; font-size: 14px; font-weight: 600; letter-spacing: .02em; }
     .detail { display: block; font-size: 11px; opacity: .7; margin-top: 5px; }
-    .arrow { font-size: 22px; color: #c7a7a7; }
+    .arrow { width: 28px; height: 28px; flex: none; color: #c7a7a7; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+    .arrow-accent { stroke-width: 1; }
     .link--primary .arrow { color: var(--wine); }
     footer { margin-top: 38px; text-align: center; }
     .footer-line { width: 26px; height: 1px; background: #a84349; margin: 0 auto 17px; }
@@ -69,15 +70,15 @@
     <nav aria-label="Links Capaz Tattoo">
       <a class="link link--primary" href="https://capaz.tattoo/querotatuar">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6L16 3Z M13 6l5 5"/></svg>
-        <span class="copy"><span class="title" data-text="formTitle">contato | agendamento</span><span class="detail" data-text="formDetail">Conte sua ideia e peça um orçamento</span></span><span class="arrow" aria-hidden="true">↗</span>
+        <span class="copy"><span class="title" data-text="formTitle">contato | agendamento</span><span class="detail" data-text="formDetail">Conte sua ideia e peça um orçamento</span></span><svg class="arrow" viewBox="0 0 28 28" aria-hidden="true"><path d="M5 22C10 22 10 16 14 12L23 4M14 4h9v9"/><path class="arrow-accent" d="M4 12v6M1 15h6"/></svg>
       </a>
       <a class="link" href="https://capaz.tattoo/">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
-        <span class="copy"><span class="title" data-text="siteTitle">portfolio</span><span class="detail" data-text="siteDetail">Portfólio, artes disponíveis e agenda</span></span><span class="arrow" aria-hidden="true">↗</span>
+        <span class="copy"><span class="title" data-text="siteTitle">portfolio</span><span class="detail" data-text="siteDetail">Portfólio, artes disponíveis e agenda</span></span><svg class="arrow" viewBox="0 0 28 28" aria-hidden="true"><path d="M5 22C10 22 10 16 14 12L23 4M14 4h9v9"/><path class="arrow-accent" d="M4 12v6M1 15h6"/></svg>
       </a>
       <a class="link" href="https://www.instagram.com/capaz.tattoo/" target="_blank" rel="noopener noreferrer">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>
-        <span class="copy"><span class="title">instagram</span><span class="detail" data-text="instagramDetail">@capaz.tattoo · trabalhos e cotidiano</span></span><span class="arrow" aria-hidden="true">↗</span>
+        <span class="copy"><span class="title">instagram</span><span class="detail" data-text="instagramDetail">@capaz.tattoo · trabalhos e cotidiano</span></span><svg class="arrow" viewBox="0 0 28 28" aria-hidden="true"><path d="M5 22C10 22 10 16 14 12L23 4M14 4h9v9"/><path class="arrow-accent" d="M4 12v6M1 15h6"/></svg>
       </a>
     </nav>
     <footer><div class="footer-line"></div><button class="motion" type="button" hidden>Pausar vídeo</button></footer>
