@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Anamnese · CAPAZ</title>
+  <link rel="icon" href="/favicon.png">
+  <style>
+    html,body{width:100%;height:100%;margin:0;background:#141215;color:#f6f2f4;font-family:Arial,sans-serif}
+    body{height:100vh;height:100dvh}
+    iframe{display:block;width:100%;height:100%;border:0;background:#141215}
+    [hidden]{display:none!important}
+    .message{box-sizing:border-box;max-width:540px;margin:auto;padding:60px 24px;text-align:center;line-height:1.6}
+    .message strong{display:block;margin-bottom:28px;letter-spacing:8px;font-size:24px}
+    .message a{color:inherit}
+  </style>
+</head>
+<body>
+  <div class="message" id="message"><strong>CAPAZ</strong><p id="notice">Este link de anamnese está incompleto. Peça à Capaz o link individual enviado pelo CRM.</p></div>
+  <iframe id="anamnese" title="Anamnese CAPAZ" hidden referrerpolicy="no-referrer"></iframe>
+  <script>
+    (function () {
+      var match = window.location.pathname.match(/^\/anamnese\/([a-f0-9]{64})\/?$/);
+      if (match) {
+        var frame = document.getElementById('anamnese');
+        frame.src = 'https://capaz-tattoo-crm.diogotupi09.chatgpt.site/anamnese/' + match[1];
+        frame.hidden = false;
+        document.getElementById('message').hidden = true;
+      } else if (!/^\/anamnese(?:\/|$)/.test(window.location.pathname)) {
+        document.title = 'Página não encontrada · CAPAZ';
+        document.getElementById('notice').textContent = 'Página não encontrada. Confira o endereço informado.';
+      }
+    })();
+  </script>
+</body>
+</html>
